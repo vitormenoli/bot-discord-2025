@@ -1,0 +1,1 @@
+# Bot de Discord 2025 - Vitor Menoli
