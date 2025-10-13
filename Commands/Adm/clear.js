@@ -15,6 +15,10 @@ module.exports = {
     ],
 
     run: async(client, interaction) => {
+        if (!interaction.member.permissions.has(Discord.PermissionFlagsBits.ManageMessages)) {
+            return interaction.reply({ content: '❌ Você não tem permissão para usar este comando.', flags: Discord.MessageFlags.Ephemeral })
+        }
+
         const number = interaction.options.getInteger('quantidade')
 
         const embed = new Discord.EmbedBuilder().setColor(cor)
