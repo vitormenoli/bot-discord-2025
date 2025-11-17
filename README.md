@@ -14,7 +14,7 @@ A cada vídeo da série, um **novo comando** ou **sistema** será adicionado aqu
 ## 📺 Acompanhe a Série
 
 Todos os episódios serão publicados no canal do YouTube:  
-👉 [Vitor Menoli - YouTube](https://www.youtube.com/@vitor.menoli)
+👉 [Vitor Menoli - YouTube](https://www.youtube.com/watch?v=4zeQgCeVL3c&list=PLRbMj6F89jby07RZn0RvoQ07HKVgCO56k)
 
 ---
 
