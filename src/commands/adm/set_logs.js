@@ -12,7 +12,7 @@ module.exports = {
     {
       name: "ver_canais",
       description: "Ver canais configurados para logs.",
-      type: Discord.ApplicationCommandOptionType.Subcommand
+      type: Discord.ApplicationCommandOptionType.Subcommand,
     },
     {
       name: "entrada",
@@ -45,7 +45,11 @@ module.exports = {
   ],
 
   run: async (client, interaction) => {
-    if (!interaction.member.permissions.has(Discord.PermissionFlagsBits.ManageChannels)) {
+    if (
+      !interaction.member.permissions.has(
+        Discord.PermissionFlagsBits.ManageChannels
+      )
+    ) {
       return interaction.reply({
         content: "❌ Você não tem permissão para usar este comando.",
         flags: Discord.MessageFlags.Ephemeral,
@@ -55,38 +59,50 @@ module.exports = {
     const subcommand = interaction.options.getSubcommand();
 
     if (subcommand === "ver_canais") {
-        const entradaChannel = interaction.guild.channels.cache.get(db.get(`logs_entrada_${interaction.guild.id}`)) || "\`Nenhum canal configurado\`";
-        const saidaChannel = interaction.guild.channels.cache.get(db.get(`logs_saida_${interaction.guild.id}`)) || "\`Nenhum canal configurado\`";
+      const entradaChannel =
+        interaction.guild.channels.cache.get(
+          db.get(`logs_entrada_${interaction.guild.id}`)
+        ) || "`Nenhum canal configurado`";
+      const saidaChannel =
+        interaction.guild.channels.cache.get(
+          db.get(`logs_saida_${interaction.guild.id}`)
+        ) || "`Nenhum canal configurado`";
 
-        const embed = new Discord.EmbedBuilder()
-        .setTitle('Canais de Logs Configurados')
-        .setDescription(`- Veja os canais de logs configurados abaixo:\n  - Entrada: ${entradaChannel}\n  - Saída: ${saidaChannel}`)
-        .setColor(cor)
+      const embed = new Discord.EmbedBuilder()
+        .setTitle("Canais de Logs Configurados")
+        .setDescription(
+          `- Veja os canais de logs configurados abaixo:\n  - Entrada: ${entradaChannel}\n  - Saída: ${saidaChannel}`
+        )
+        .setColor(cor);
 
-        return interaction.reply({ embeds: [embed] })
+      return interaction.reply({ embeds: [embed] });
     }
 
     if (subcommand === "entrada") {
-        const channel = interaction.options.getChannel("canal");
-        db.set(`logs_entrada_${interaction.guild.id}`, channel.id);
+      const channel = interaction.options.getChannel("canal");
+      db.set(`logs_entrada_${interaction.guild.id}`, channel.id);
 
-        const embed = new Discord.EmbedBuilder()
-        .setTitle('Canal Configurado')
-        .setDescription(`> ✅ O canal ${channel} foi configurado com sucesso para logs de entrada.`)
-        .setColor("Green")
+      const embed = new Discord.EmbedBuilder()
+        .setTitle("Canal Configurado")
+        .setDescription(
+          `> ✅ O canal ${channel} foi configurado com sucesso para logs de entrada.`
+        )
+        .setColor("Green");
 
-        return interaction.reply({embeds: [embed] })
+      return interaction.reply({ embeds: [embed] });
     }
     if (subcommand === "saida") {
-        const channel = interaction.options.getChannel("canal");
-        db.set(`logs_saida_${interaction.guild.id}`, channel.id);
+      const channel = interaction.options.getChannel("canal");
+      db.set(`logs_saida_${interaction.guild.id}`, channel.id);
 
-        const embed = new Discord.EmbedBuilder()
-        .setTitle('Canal Configurado')
-        .setDescription(`> ✅ O canal ${channel} foi configurado com sucesso para logs de saída.`)
-        .setColor("Green")
+      const embed = new Discord.EmbedBuilder()
+        .setTitle("Canal Configurado")
+        .setDescription(
+          `> ✅ O canal ${channel} foi configurado com sucesso para logs de saída.`
+        )
+        .setColor("Green");
 
-        return interaction.reply({embeds: [embed] })
+      return interaction.reply({ embeds: [embed] });
     }
   },
 };
