@@ -1,5 +1,5 @@
 const Discord = require("discord.js");
-const cor = require("../../config").discord.color;
+const color = require("../../config").discord.color;
 
 module.exports = {
   name: "ban",
@@ -7,14 +7,14 @@ module.exports = {
   type: Discord.ApplicationCommandType.ChatInput,
   options: [
     {
-      name: "membro",
-      description: "membro que será banido.",
+      name: "member",
+      description: "Member to ban.",
       type: Discord.ApplicationCommandOptionType.User,
       required: true,
     },
     {
-      name: "motivo",
-      description: "Motivo do banimento.",
+      name: "reason",
+      description: "Reason for the ban.",
       type: Discord.ApplicationCommandOptionType.String,
       required: false,
     },
@@ -32,9 +32,9 @@ module.exports = {
       });
     }
 
-    const user = interaction.options.getUser("membro");
+    const user = interaction.options.getUser("member");
     const member = interaction.guild.members.cache.get(user.id);
-    const motivo = interaction.options.getString("motivo") || "Não informado";
+    const reason = interaction.options.getString("reason") || "Not provided";
 
     const buttons = {
       confirm: new Discord.ButtonBuilder()
@@ -75,10 +75,10 @@ module.exports = {
       });
 
     const embed = new Discord.EmbedBuilder()
-      .setColor(cor)
+      .setColor(color)
       .setTitle("Confirmação de Banimento")
       .setDescription(
-        `> 🔎 Você tem certeza que deseja banir ${member} do servidor?\n\n> 📔 **Motivo:** ${motivo}`
+        `> 🔎 Você tem certeza que deseja banir ${member} do servidor?\n\n> 📔 **Reason:** ${reason}`
       );
 
     const msg = await interaction.reply({ embeds: [embed], components: [row] });
@@ -100,12 +100,12 @@ module.exports = {
 
       if (i.customId === "confirm_ban") {
         try {
-          await member.ban({ reason: [motivo] });
+          await member.ban({ reason: [reason] });
 
           embed
             .setTitle("Banimento Confirmado")
             .setDescription(
-              `> ✅ O membro ${member} foi banido com sucesso!\n\n> 📔 **Motivo:** ${motivo}`
+              `> ✅ O membro ${member} foi banido com sucesso!\n\n> 📔 **Reason:** ${reason}`
             );
 
           interaction.editReply({ embeds: [embed], components: [] });

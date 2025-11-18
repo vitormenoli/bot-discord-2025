@@ -4,7 +4,7 @@ const Discord = require("discord.js");
 
 async function commandsHandler(client) {
   const slashArray = [];
-  let comandosCarregados = [];
+  let commandsLoaded = [];
   client.slashCommands = new Discord.Collection();
 
   try {
@@ -22,15 +22,13 @@ async function commandsHandler(client) {
 
         client.slashCommands.set(command.name, command);
         slashArray.push(command);
-        comandosCarregados.push(command.name);
+        commandsLoaded.push(command.name);
       }
     }
 
     client.on("clientReady", () => {
       client.guilds.cache.forEach((guild) => guild.commands.set(slashArray));
-      console.log(
-        `📘 Comandos Carregados: [${comandosCarregados.join(", ")}]`.blue
-      );
+      console.log(`📘 Commands Loaded: [${commandsLoaded.join(", ")}]`.blue);
     });
   } catch (error) {
     console.log("Erro ao carregar comandos: ".red, error);

@@ -1,26 +1,26 @@
 const fs = require("fs");
 const path = require("path");
 
-function listarArquivos(dir, arquivos, pastaPai, objectEventos, client) {
+function listFiles(dir, fileList, parentFolder, eventsObject, client) {
   const files = fs.readdirSync(dir);
 
   files.forEach((file) => {
     const filePath = path.join(dir, file);
 
     if (fs.statSync(filePath).isDirectory()) {
-      listarArquivos(filePath, arquivos, file, objectEventos, client);
+      listFiles(filePath, fileList, file, eventsObject, client);
     } else if (file.endsWith(".js")) {
       const eventModule = require(filePath);
       const eventName = eventModule.name;
 
-      arquivos.push(`${pastaPai}/${file}`);
+      fileList.push(`${parentFolder}/${file}`);
 
       if (typeof eventModule.execute === "function") {
         eventModule.execute(client);
       }
 
-      if (!objectEventos[pastaPai]) objectEventos[pastaPai] = [];
-      objectEventos[pastaPai].push(eventName);
+      if (!eventsObject[parentFolder]) eventsObject[parentFolder] = [];
+      eventsObject[parentFolder].push(eventName);
     }
   });
 }
@@ -28,19 +28,19 @@ function listarArquivos(dir, arquivos, pastaPai, objectEventos, client) {
 function eventsHandler(client) {
   const eventsPath = path.resolve("./src/events");
   let eventNames = [];
-  const objectEventos = {};
+  const eventsObject = {};
 
-  listarArquivos(eventsPath, eventNames, "Events", objectEventos, client);
+  listFiles(eventsPath, eventNames, "Events", eventsObject, client);
 
-  const eventosCarregados = [];
+  const loadedEvents = [];
 
-  for (let pastaPai in objectEventos) {
-    eventosCarregados.push(
-      `[${pastaPai}: ${objectEventos[pastaPai].join(", ")}]`
+  for (let parentFolder in eventsObject) {
+    loadedEvents.push(
+      `[${parentFolder}: ${eventsObject[parentFolder].join(", ")}]`
     );
   }
 
-  console.log(`📁 Eventos Carregados: ${eventosCarregados.join(" - ")}`.yellow);
+  console.log(`📁 Events Loaded: ${loadedEvents.join(" - ")}`.yellow);
 }
 
 module.exports = eventsHandler;

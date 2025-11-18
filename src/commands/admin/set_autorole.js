@@ -1,5 +1,5 @@
 const { JsonDatabase } = require("wio.db");
-const db = new JsonDatabase({ databasePath: "./Databases/data.json" });
+const db = new JsonDatabase({ databasePath: "./database/data.json" });
 
 const Discord = require("discord.js");
 const cor = require("../../config").discord.color;
